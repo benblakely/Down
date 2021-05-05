@@ -241,10 +241,7 @@ open class DownStyler: Styler {
             existingStyle.indented(by: itemParagraphStyler.indentation)
         }
 
-        let attributedPrefix = str.prefix(with: prefixLength)
-        let prefixWidth = attributedPrefix.size().width
-
-        let defaultStyle = itemParagraphStyler.leadingParagraphStyle(prefixWidth: prefixWidth)
+        let defaultStyle = itemParagraphStyler.leadingParagraphStyle
         str.addAttributeInMissingRanges(for: .paragraphStyle, value: defaultStyle, within: range)
     }
 
@@ -291,16 +288,6 @@ private extension NSParagraphStyle {
         result.headIndent += amount
         result.tailIndent = -amount
         return result
-    }
-
-}
-
-private extension NSAttributedString {
-
-    func prefix(with length: Int) -> NSAttributedString {
-        guard length <= self.length else { return self }
-        guard length > 0 else { return NSAttributedString() }
-        return attributedSubstring(from: NSRange(location: 0, length: length))
     }
 
 }

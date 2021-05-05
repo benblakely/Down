@@ -29,6 +29,20 @@ public class ListItemParagraphStyler {
         return largestPrefixWidth + options.spacingAfterPrefix
     }
 
+    /// The paragraph style intended for the first paragraph.
+
+    public var leadingParagraphStyle: NSParagraphStyle {
+        let contentIndentation = indentation
+        let style = baseStyle
+        style.tabStops = [
+            tabStop(at: largestPrefixWidth, textAlignment: .right),
+            tabStop(at: contentIndentation, textAlignment: .left)
+        ]
+        style.defaultTabInterval = options.spacingAfterPrefix
+        style.headIndent = contentIndentation
+        return style
+    }
+
     /// The paragraph style intended for all paragraphs excluding the first.
 
     public var trailingParagraphStyle: NSParagraphStyle {
@@ -58,25 +72,8 @@ public class ListItemParagraphStyler {
 
     // MARK: - Methods
 
-    /// The paragraph style intended for the first paragraph of the list item.
-    /// 
-    /// - Parameter prefixWidth: the width (in points) of the list item prefix.
-
-    public func leadingParagraphStyle(prefixWidth: CGFloat) -> NSParagraphStyle {
-        let contentIndentation = indentation
-        let prefixIndentation: CGFloat = contentIndentation - options.spacingAfterPrefix - prefixWidth
-        let prefixSpill = max(0, prefixWidth - largestPrefixWidth)
-        let firstLineContentIndentation = contentIndentation + prefixSpill
-
-        let style = baseStyle
-        style.firstLineHeadIndent = prefixIndentation
-        style.tabStops = [tabStop(at: firstLineContentIndentation)]
-        style.headIndent = contentIndentation
-        return style
-    }
-
-    private func tabStop(at location: CGFloat) -> NSTextTab {
-        return NSTextTab(textAlignment: .left, location: location, options: [:])
+    private func tabStop(at location: CGFloat, textAlignment: NSTextAlignment) -> NSTextTab {
+        return NSTextTab(textAlignment: textAlignment, location: location, options: [:])
     }
 
 }

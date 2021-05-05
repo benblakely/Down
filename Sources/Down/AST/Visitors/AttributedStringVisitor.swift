@@ -78,7 +78,7 @@ extension AttributedStringVisitor: Visitor {
         let result = visitChildren(of: node).joined
 
         let prefix = listPrefixGenerators.last?.next() ?? "•"
-        let attributedPrefix = "\(prefix)\t".attributed
+        let attributedPrefix = "\t\(prefix)\t".attributed
         styler.style(listItemPrefix: attributedPrefix)
         result.insert(attributedPrefix, at: 0)
 
